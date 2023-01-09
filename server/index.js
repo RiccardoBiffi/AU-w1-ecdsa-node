@@ -11,8 +11,11 @@ app.use(cors());
 app.use(express.json());
 
 const balances = {
+  // Private key: 3b598eafb427a7c65557743f16c9575e1865834a993d704fdf811934c30ed0ef
   "0x69f0cd1939ca39f87a4cc87e6127515f47ce852c": 100,
+  // Private key: d82cb8df49b4c9ab074fe63435e35b1fdfe872bd96a5a9dca4896715376b7830
   "0x45a4e9fed5c20ad90026919612672886dc620bc4": 50,
+  // Private key: a8f54abe4e787868490ea7b7b8ff00b2074572f4481149f6d5e9db741e1f4a3f
   "0x9276d5abc064d456cfb638247a4284661d07800a": 75,
 };
 
