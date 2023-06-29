@@ -11,12 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 const balances = {
-  // Private key: 3b598eafb427a7c65557743f16c9575e1865834a993d704fdf811934c30ed0ef
-  "0x69f0cd1939ca39f87a4cc87e6127515f47ce852c": 100,
-  // Private key: d82cb8df49b4c9ab074fe63435e35b1fdfe872bd96a5a9dca4896715376b7830
-  "0x45a4e9fed5c20ad90026919612672886dc620bc4": 50,
-  // Private key: a8f54abe4e787868490ea7b7b8ff00b2074572f4481149f6d5e9db741e1f4a3f
-  "0x9276d5abc064d456cfb638247a4284661d07800a": 75,
+  "0x49897358dd820a7f31aa23ec18b935f14fa1c2b9": 100,
+  "0x34346e4ab50874656bd1ab57be149b4728846c06": 50,
+  "0xaf1b9801e086ff1d27eb0e53162e42bb4f728f90": 75,
 };
 
 app.get("/balance/:address", (req, res) => {
@@ -26,7 +23,9 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { msgHash, signature, recoveryBit, recipient, amount } = req.body;
+  // todo get signature
+  // recover public key from signature and address
+  const { sender, recipient, amount } = req.body;
 
   const publicKey = secp.recoverPublicKey(msgHash, signature, recoveryBit);
   const sender = "0x" + toHex(keccak256(publicKey).slice(-20))
