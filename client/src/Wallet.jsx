@@ -15,9 +15,9 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
       const address = getAddress(publicKey);
       setAddress(address);
       const {
-        data: { balance },
-      } = await server.get(`balance/${address}`);
-      setBalance(balance);
+        data: { accountInfo },
+      } = await server.get(`accountInfo/${address}`);
+      setBalance(accountInfo.balance);
     } else {
       setBalance(0);
     }
@@ -28,12 +28,12 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
       <h1>Your Wallet</h1>
 
       <label>
-        Private Key
-        <input placeholder="Type your private key" value={privateKey} onChange={onChange}></input>
+        Your Private Key
+        <input placeholder="Type your Private Key" value={privateKey} onChange={onChange}></input>
       </label>
 
       <label>
-        Your address
+        Your derived address
         <input value={address ? address.slice(0, 6) + "..." + address.slice(-4) : ""} title={address} disabled></input>
       </label>
 

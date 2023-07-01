@@ -1,9 +1,8 @@
 import { useState } from "react";
 import server from "./server";
-import { toHex } from "ethereum-cryptography/utils";
-import { hashMessage, signMessage } from "./scripts/crypto-utils";
+import { buildMessage, hashMessage, signMessage } from "./scripts/crypto-utils";
 
-function Transfer({ privateKey, setBalance }) {
+function Transfer({ address, setBalance, nonce, setNonce, privateKey }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -13,18 +12,21 @@ function Transfer({ privateKey, setBalance }) {
     evt.preventDefault();
 
     try {
-      const message = `Sending ${sendAmount} to ${recipient}`;
-      const [signature, recovery] = signMessage(message, privateKey);
+      const message = buildMessage(sendAmount, recipient, nonce);
+      const [signedMsg, recovery] = signMessage(message, privateKey);
 
-      const { data: { balance } } = await server.post(`send`, {
-        msgHash: toHex(hashMessage(message)),
-        signedMsg: signature,
-        recoveryBit: recovery,
-        recipient: recipient,
+      const { data: { accountInfo } } = await server.post(`send`, {
+        sender: address,
         amount: parseInt(sendAmount),
+        recipient: recipient,
+        nonce: nonce,
+        msgHash: hashMessage(message),
+        signedMsg: signedMsg,
+        recoveryBit: recovery,
       });
 
-      setBalance(balance);
+      setBalance(accountInfo.balance);
+      setNonce(accountInfo.nonce);
 
     } catch (ex) {
       alert(ex.response.data.message);
@@ -38,7 +40,7 @@ function Transfer({ privateKey, setBalance }) {
       <label>
         Send Amount
         <input
-          placeholder="1, 2, 3..."
+          placeholder="Type an amount, eg: 5"
           value={sendAmount}
           onChange={setValue(setSendAmount)}
         ></input>
@@ -47,11 +49,13 @@ function Transfer({ privateKey, setBalance }) {
       <label>
         Recipient
         <input
-          placeholder="Type an address, for example: 0x2"
+          placeholder="Type an address, eg: 0x34346e4ab50874656bd1ab57be149b4728846c06"
           value={recipient}
           onChange={setValue(setRecipient)}
         ></input>
       </label>
+
+      <div className="balance">Nonce: {nonce}</div>
 
       <input type="submit" className="button" value="Transfer" />
     </form>
@@ -59,3 +63,5 @@ function Transfer({ privateKey, setBalance }) {
 }
 
 export default Transfer;
+
+
