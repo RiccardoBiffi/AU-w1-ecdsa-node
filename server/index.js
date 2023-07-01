@@ -21,7 +21,7 @@ const balances = {
 
 app.get("/accountInfo/:address", (req, res) => {
   const { address } = req.params;
-  const accountInfo = balances[address] || 0;
+  const accountInfo = balances[address] || { balance: 0, nonce: 0 };
   res.send({ accountInfo: accountInfo });
 });
 

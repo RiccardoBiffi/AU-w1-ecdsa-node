@@ -5,7 +5,7 @@ import { getAddress } from "./scripts/crypto-utils";
 import server from "./server";
 
 
-function Wallet({ address, setAddress, balance, setBalance, privateKey, setPrivateKey }) {
+function Wallet({ address, setAddress, balance, setBalance, setNonce, privateKey, setPrivateKey }) {
 
   async function onChange(evt) {
     const privateKey = evt.target.value;
@@ -18,6 +18,7 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
         data: { accountInfo },
       } = await server.get(`accountInfo/${address}`);
       setBalance(accountInfo.balance);
+      setNonce(accountInfo.nonce)
     } else {
       setBalance(0);
     }
