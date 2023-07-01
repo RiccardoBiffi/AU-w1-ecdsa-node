@@ -9,7 +9,11 @@ export function getAddress(publicKey) {
 }
 
 export function hashMessage(message) {
-    return keccak256(utf8ToBytes(message))
+    return toHex(keccak256(utf8ToBytes(message)))
+}
+
+export function buildMessage(sendAmount, recipient, nonce) {
+    return `Sending ${sendAmount} to ${recipient} with nonce ${nonce}`;
 }
 
 export function signMessage(msg, privateKey) {
