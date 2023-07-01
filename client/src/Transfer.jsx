@@ -43,7 +43,7 @@ function Transfer({ address, setBalance, nonce, setNonce, privateKey }) {
           placeholder="Type an amount, eg: 5"
           value={sendAmount}
           onChange={setValue(setSendAmount)}
-        ></input>
+        />
       </label>
 
       <label>
@@ -52,7 +52,7 @@ function Transfer({ address, setBalance, nonce, setNonce, privateKey }) {
           placeholder="Type an address, eg: 0x34346e4ab50874656bd1ab57be149b4728846c06"
           value={recipient}
           onChange={setValue(setRecipient)}
-        ></input>
+        />
       </label>
 
       <div className="balance">Nonce: {nonce}</div>
