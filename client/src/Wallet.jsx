@@ -1,6 +1,7 @@
 import { secp256k1 } from "ethereum-cryptography/secp256k1";
 import { keccak256 } from "ethereum-cryptography/keccak";
-import { toHex } from "ethereum-cryptography/utils";
+import { getAddress } from "./scripts/crypto-utils";
+
 import server from "./server";
 
 
@@ -22,10 +23,6 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
     }
   }
 
-  function getAddress(publicKey) {
-    return "0x" + toHex(keccak256(publicKey.slice(1)).slice(-20));
-  }
-
   return (
     <div className="container wallet">
       <h1>Your Wallet</h1>
@@ -37,10 +34,8 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
 
       <label>
         Your address
-        <input value={address ? address.slice(0, 6) + "..." + address.slice(-4) : ""} disabled></input>
+        <input value={address ? address.slice(0, 6) + "..." + address.slice(-4) : ""} title={address} disabled></input>
       </label>
-
-      <div className="address">Address: {address}</div>
 
       <div className="balance">Balance: {balance}</div>
     </div>
