@@ -1,11 +1,16 @@
 import { secp256k1 } from "ethereum-cryptography/secp256k1";
-import { keccak256 } from "ethereum-cryptography/keccak";
+import { toHex } from "ethereum-cryptography/utils";
 import { getAddress } from "./scripts/crypto-utils";
+import { useEffect } from "react";
 
 import server from "./server";
 
 
 function Wallet({ address, setAddress, balance, setBalance, setNonce, privateKey, setPrivateKey }) {
+
+  useEffect(() => {
+    onChange({ target: { value: privateKey } })
+  }, []);
 
   async function onChange(evt) {
     const privateKey = evt.target.value;
@@ -24,21 +29,28 @@ function Wallet({ address, setAddress, balance, setBalance, setNonce, privateKey
     }
   }
 
+  function generate() {
+    const privateKey = toHex(secp256k1.utils.randomPrivateKey())
+    setPrivateKey(privateKey);
+    onChange({ target: { value: privateKey } });
+  }
+
   return (
     <div className="container wallet">
       <h1>Your Wallet</h1>
 
       <label>
         Your Private Key
-        <input placeholder="Type your Private Key" value={privateKey} onChange={onChange}></input>
+        <input placeholder="Type your Private Key" value={privateKey} onChange={onChange} />
       </label>
 
       <label>
         Your derived address
-        <input value={address ? address.slice(0, 6) + "..." + address.slice(-4) : ""} title={address} disabled></input>
+        <input value={address} disabled></input>
       </label>
 
       <div className="balance">Balance: {balance}</div>
+      <button className="button" onClick={generate}>Generate new Private Key</button>
     </div>
   );
 }
