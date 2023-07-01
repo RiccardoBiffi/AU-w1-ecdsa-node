@@ -1,6 +1,7 @@
 ## ECDSA Node
 
 This project is an example of using a client and server to facilitate transfers between different addresses. It incorporates Public Key Cryptogrphy (Elliptic Curve Digital Signatures) so the server only allows transfers that have been signed for by the person who owns the associated address. Additionally, the server checks that the message has not been altered, that the sender is the same entity that has signed the message, and that it is not a reply attack. 
+
 The user interface allows for the transfer of funds and the creation of random private keys for testing purposes. The user needs to input a Private Key to check the balance of the account, then can specify an amount and an Ethereum format address to send those funds. The Private Key is never sent over the network.
 
 ### Video instructions
