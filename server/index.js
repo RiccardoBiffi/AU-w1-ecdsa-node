@@ -28,19 +28,24 @@ app.get("/accountInfo/:address", (req, res) => {
 app.post("/send", (req, res) => {
   const { sender, amount, recipient, nonce, msgHash, signedMsg, recoveryBit } = req.body;
 
-  if (isMessageInvalid(msgHash, amount, recipient, nonce)) return res.status(400).send({ message: "Invalid message!" });
+  if (isMessageInvalid(msgHash, amount, recipient, nonce))
+    return res.status(400).send({ message: "Invalid message!" });
 
   const [signature, publicKey] = recoverSignatureAndPublicKey(signedMsg, recoveryBit, msgHash)
-  if (isSignatureInvalid(signature, msgHash, publicKey)) return res.status(400).send({ message: "Invalid signature!" })
+  if (isSignatureInvalid(signature, msgHash, publicKey))
+    return res.status(400).send({ message: "Invalid signature!" })
 
-  if (isSenderInvalid(sender, publicKey)) return res.status(400).send({ message: "Invalid sender!" })
+  if (isSenderInvalid(sender, publicKey))
+    return res.status(400).send({ message: "Invalid sender!" })
 
   setInitialAccountInfo(sender)
   setInitialAccountInfo(recipient)
 
-  if (isNonceInvalid(sender, nonce)) return res.status(400).send({ message: "Invalid nonce!" })
+  if (isNonceInvalid(sender, nonce))
+    return res.status(400).send({ message: "Invalid nonce!" })
 
-  if (isBalanceInsufficient(sender, amount)) return res.status(400).send({ message: "Not enough funds!" })
+  if (isBalanceInsufficient(sender, amount))
+    return res.status(400).send({ message: "Not enough funds!" })
 
   balances[sender].balance -= amount
   balances[sender].nonce += 1
